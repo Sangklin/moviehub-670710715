@@ -1,8 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import FeaturedCarousel from '../components/FeaturedCarousel';
-import { movies as localMovies } from '../data/data';
-// TODO ขั้นที่ 5: import { useEffect } from 'react' และ import { getMovies } from '../api/tmdb'
+import { getMovies } from '../api/tmdb';
 
 const STEPS = [
   { n: 1, file: 'src/api/tmdb.js', what: 'เขียนส่วน fetch ใน getJSON' },
@@ -24,9 +23,17 @@ function shuffle(list) {
 }
 
 function Home() {
-  // สุ่มครั้งเดียวตอน component เกิด แล้วจำไว้ใน state (กดเลื่อนแล้วลำดับไม่เปลี่ยน)
-  // TODO ขั้นที่ 5: เปลี่ยนเป็น useState([]) แล้วใช้ useEffect เรียก getMovies() แล้ว setPicks(shuffle(list))
-  const [picks, setPicks] = useState(() => shuffle(localMovies));
+  const [picks, setPicks] = useState([]);
+
+  useEffect(() => {
+    let ignore = false;
+    getMovies()
+      .then(list => {
+        if (!ignore) setPicks(shuffle(list));
+      })
+      .catch(() => { if (!ignore) setPicks([]); });
+    return () => { ignore = true; };
+  }, []);
 
   return (
     <div className="mx-auto max-w-5xl px-4 md:px-6">
