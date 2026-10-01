@@ -75,4 +75,4 @@ export async function searchMovies(query) {
 export async function getMovie(id) {
   const data = await getJSON(`/movie/${id}`);
   return toMovie(data);
-}
+}     
