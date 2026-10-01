@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import FeaturedCarousel from '../components/FeaturedCarousel';
-import { getMovies } from '../api/tmdb';
+import { getMovies } from '../api/backend';
 
 const STEPS = [
   { n: 1, file: 'src/api/tmdb.js', what: 'เขียนส่วน fetch ใน getJSON' },
@@ -44,8 +44,7 @@ function Home() {
           หนังน่าดู รวมไว้ที่เดียว
         </h1>
         <p className="mt-4 max-w-xl text-slate-600">
-          ตอนนี้ MovieHub ยังมีหนังแค่ 10 เรื่องจากไฟล์ data.js
-          วันนี้เราจะเชื่อมกับ TMDB ให้ได้หนังที่กำลังฉายจริง และเตรียมต่อกับ Backend ของทีม
+          MovieHub แสดงหนัง 100 เรื่องจาก Backend ของทีม
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link to="/movies" className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-600">
@@ -62,7 +61,7 @@ function Home() {
         <div className="mb-4 flex items-end justify-between">
           <div>
             <h2 className="text-xl font-semibold text-slate-900">หนังแนะนำ</h2>
-            <p className="text-sm text-slate-500">สุ่มลำดับใหม่ทุกครั้งที่เปิดหน้า แหล่งข้อมูล: data.js</p>
+            <p className="text-sm text-slate-500">สุ่มลำดับใหม่ทุกครั้งที่เปิดหน้า แหล่งข้อมูล: Backend ของทีม</p>
           </div>
           <button onClick={() => setPicks(shuffle(picks))} className="text-sm text-emerald-600 hover:underline">
             สุ่มใหม่
