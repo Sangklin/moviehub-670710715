@@ -32,7 +32,6 @@ function MovieDetail() {
   // รีวิวโหลดแยกจากหนัง เพื่อให้หน้าหนังยังแสดงได้แม้รีวิวโหลดไม่สำเร็จ
   useEffect(() => {
     let ignore = false;
-    setReviews([]);
     getReviews(id)
       .then(data => { if (!ignore) setReviews(data.items); })
       .catch(() => { if (!ignore) setReviews([]); });
@@ -41,9 +40,9 @@ function MovieDetail() {
 
   async function handleReviewSubmit(text) {
     const saved = await postReview(id, text, token);
-    setReviews(current => [
+    setReviews([
       { ...saved, member: { id: member.id, displayName: member.displayName }, score: null },
-      ...current,
+      ...reviews,
     ]);
   }
 

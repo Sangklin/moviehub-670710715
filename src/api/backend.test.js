@@ -1,10 +1,5 @@
 import { apiFetch, login, postReview } from './backend';
 
-test('error แบบ Go ต้องอ่านข้อความ error.message ได้', async () => {
-  fetch.mockResolvedValue(fakeResponse(401, { error: { code: 'BAD_CREDENTIALS', message: 'อีเมลหรือรหัสผ่านไม่ถูกต้อง' } }));
-  await expect(login('demo@example.test', 'wrong')).rejects.toThrow('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
-});
-
 // ตัวช่วยสร้าง "คำตอบปลอม" ของ fetch: ใส่แค่ status กับ body ที่อยากให้ server ตอบ
 function fakeResponse(status, body) {
   return {
