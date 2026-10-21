@@ -3,6 +3,24 @@
 โปรเจกต์เริ่มต้นสำหรับสัปดาห์ Fetch / JSON / API ของวิชา 520 341 Client Side Web Programming
 หน้าตาเสร็จแล้วทั้งหมด (React 19 + React Router 6 + Tailwind CSS 3) เหลือเติมเฉพาะส่วนที่คุยกับ API ทีละขั้นในคาบ
 
+## สถานะ Week 12: Admin Backoffice
+
+- เว็บ React: https://moviehub-670710715-ianr.vercel.app/
+- Go API: https://moviehub-51xl.onrender.com
+- Repository React และ Go อยู่ด้วยกัน: https://github.com/Sangklin/moviehub-670710715 (Go อยู่ใน `moviehub/`)
+- GitHub Actions: https://github.com/Sangklin/moviehub-670710715/actions
+- บทเรียน: https://plearnjai.com/fe2026/week12-admin-backoffice.html
+
+หลังบ้านอยู่ที่ `/admin` มี Dashboard, จัดการหนัง และรายชื่อสมาชิก สมาชิกทั่วไปเห็น 403; admin เข้าจัดการได้ การตรวจสิทธิ์จริงอยู่ที่ Go และต้อง login ใหม่หลังเปลี่ยนบทบาท
+
+ตรวจด่านเพิ่ม/แก้ไข/ลบหนังผ่านหน้าเว็บแล้ว และเก็บหนังสั้นสมมติ “คืนฉายหนังที่ทับแก้ว” ไว้เป็นข้อมูลฝึก การเลื่อนเพื่อนเป็น admin ใน Lab ข้อ 7 ข้ามไว้ตามคำสั่งเจ้าของโปรเจกต์
+
+รัน React จากโฟลเดอร์หลักด้วย `npm start` โดยตั้ง `REACT_APP_API_URL=https://moviehub-51xl.onrender.com` ใน `.env.local` และใช้ `REACT_APP_TMDB_KEY` ของตนเองใน `.env` สำหรับส่วน TMDB ส่วน Go ใช้ `cd moviehub` แล้ว `go run .` โดยอ่าน `DATABASE_URL`, `JWT_SECRET` และ `ALLOWED_ORIGINS` จาก `moviehub/.env` ในเครื่อง หรือ Environment Variables บน Render
+
+ตรวจงานด้วย `CI=true npm test -- --watchAll=false --runInBand` และ `npm run build` เทสต์ทั้งหมด 30 ข้อ รวม RequireRole และ AdminMembers ตามบทเรียน 6 ข้อ
+
+ข้อความ Starter ด้านล่างเป็นเอกสารเดิมของช่วงเริ่มต่อ TMDB; หน้า Movies ปัจจุบันใช้ Go API แล้ว
+
 ## เริ่มใช้งานใน Codespaces
 
 ```bash
