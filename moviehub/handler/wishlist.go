@@ -12,8 +12,8 @@ import (
 )
 
 func (h *Handler) GetWishlist(w http.ResponseWriter, r *http.Request) {
-	who := mw.WhoFrom(r.Context())
-	items, err := h.Store.GetWishlist(r.Context(), who.ID)
+	memberID, _ := mw.MemberID(r.Context())
+	items, err := h.Store.GetWishlist(r.Context(), memberID)
 	if err != nil {
 		internal(w, err)
 		return
@@ -38,8 +38,8 @@ func (h *Handler) PutWishlist(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusBadRequest, "BAD_NOTE", "โน้ตต้องยาวไม่เกิน 200 ตัวอักษร")
 		return
 	}
-	who := mw.WhoFrom(r.Context())
-	err := h.Store.PutWishlist(r.Context(), who.ID, movieID, req.Note)
+	memberID, _ := mw.MemberID(r.Context())
+	err := h.Store.PutWishlist(r.Context(), memberID, movieID, req.Note)
 	if errors.Is(err, store.ErrNoMovie) {
 		writeError(w, http.StatusNotFound, "MOVIE_NOT_FOUND", "ไม่พบหนังเรื่องนี้")
 		return
@@ -57,8 +57,8 @@ func (h *Handler) DeleteWishlist(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusBadRequest, "BAD_ID", "เลขหนังต้องเป็นตัวเลข")
 		return
 	}
-	who := mw.WhoFrom(r.Context())
-	if err := h.Store.DeleteWishlist(r.Context(), who.ID, movieID); err != nil {
+	memberID, _ := mw.MemberID(r.Context())
+	if err := h.Store.DeleteWishlist(r.Context(), memberID, movieID); err != nil {
 		internal(w, err)
 		return
 	}

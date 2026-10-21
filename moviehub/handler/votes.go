@@ -26,8 +26,8 @@ func (h *Handler) PutVote(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusBadRequest, "BAD_SCORE", "score ต้องเป็นจำนวนเต็ม 1 ถึง 10")
 		return
 	}
-	who := mw.WhoFrom(r.Context())
-	err := h.Store.PutVote(r.Context(), who.ID, movieID, req.Score)
+	memberID, _ := mw.MemberID(r.Context())
+	err := h.Store.PutVote(r.Context(), memberID, movieID, req.Score)
 	if errors.Is(err, store.ErrNoMovie) {
 		writeError(w, http.StatusNotFound, "MOVIE_NOT_FOUND", "ไม่พบหนังเรื่องนี้")
 		return
@@ -45,8 +45,8 @@ func (h *Handler) DeleteVote(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusBadRequest, "BAD_ID", "เลขหนังต้องเป็นตัวเลข")
 		return
 	}
-	who := mw.WhoFrom(r.Context())
-	if err := h.Store.DeleteVote(r.Context(), who.ID, movieID); err != nil {
+	memberID, _ := mw.MemberID(r.Context())
+	if err := h.Store.DeleteVote(r.Context(), memberID, movieID); err != nil {
 		internal(w, err)
 		return
 	}

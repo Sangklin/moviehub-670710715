@@ -11,20 +11,6 @@ import (
 	"moviehub/store"
 )
 
-func (h *Handler) Me(w http.ResponseWriter, r *http.Request) {
-	who := mw.WhoFrom(r.Context())
-	m, err := h.Store.MemberByID(r.Context(), who.ID)
-	if errors.Is(err, store.ErrNotFound) {
-		writeError(w, http.StatusUnauthorized, "LOGIN_REQUIRED", "กรุณาเข้าสู่ระบบก่อน")
-		return
-	}
-	if err != nil {
-		internal(w, err)
-		return
-	}
-	writeJSON(w, http.StatusOK, m)
-}
-
 type reviewReq struct {
 	Text string `json:"text"`
 }
@@ -45,8 +31,8 @@ func (h *Handler) AddReview(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusBadRequest, "REVIEW_TOO_SHORT", "รีวิวสั้นเกินไป")
 		return
 	}
-	who := mw.WhoFrom(r.Context()) // เลขสมาชิกมาจากตั๋วเท่านั้น
-	rv, err := h.Store.AddReview(r.Context(), who.ID, movieID, text)
+	memberID, _ := mw.MemberID(r.Context()) // เลขสมาชิกมาจากตั๋วเท่านั้น
+	rv, err := h.Store.AddReview(r.Context(), memberID, movieID, text)
 	switch {
 	case errors.Is(err, store.ErrDuplicate):
 		writeError(w, http.StatusConflict, "ALREADY_REVIEWED", "คุณรีวิวเรื่องนี้ไปแล้ว")
@@ -67,8 +53,8 @@ func (h *Handler) DeleteReview(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusBadRequest, "BAD_ID", "เลขรีวิวต้องเป็นตัวเลข")
 		return
 	}
-	who := mw.WhoFrom(r.Context())
-	err := h.Store.DeleteReview(r.Context(), reviewID, who.ID, who.Role == "admin")
+	memberID, _ := mw.MemberID(r.Context())
+	err := h.Store.DeleteReview(r.Context(), reviewID, memberID, mw.Role(r.Context()) == "admin")
 	if errors.Is(err, store.ErrNotFound) {
 		writeError(w, http.StatusNotFound, "REVIEW_NOT_FOUND", "ไม่พบรีวิวนี้")
 		return
