@@ -7,6 +7,7 @@ function Register() {
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState(null);
   const [status, setStatus] = useState('typing');
   const { register } = useAuth();
@@ -14,6 +15,10 @@ function Register() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      setError('รหัสผ่านทั้งสองช่องไม่ตรงกัน');
+      return;
+    }
     setStatus('submitting');
     setError(null);
     try {
@@ -34,6 +39,7 @@ function Register() {
         <input value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="ชื่อที่แสดง" required className={input} />
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="อีเมล" required className={input} />
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="รหัสผ่าน (4 ตัวขึ้นไป)" required minLength={4} className={input} />
+        <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="ยืนยันรหัสผ่าน" required minLength={4} className={input} />
         <button type="submit" disabled={status === 'submitting'}
                 className="w-full rounded-lg bg-emerald-500 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-600 disabled:bg-slate-300">
           {status === 'submitting' ? 'กำลังสมัคร...' : 'สมัครสมาชิก'}

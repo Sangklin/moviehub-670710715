@@ -6,8 +6,12 @@
 
 # API key ห้ามขึ้น GitHub
 .env
+.env.local
 .env.*.local
 
 # misc
 .DS_Store
 npm-debug.log*
+
+# Course reference files
+/course-reference/

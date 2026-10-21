@@ -21,7 +21,7 @@ export async function apiFetch(path, { method = 'GET', body, token } = {}) {
   const data = await res.json()
     .catch(() => ({ error: 'server ไม่ได้ตอบเป็น JSON' }));
   if (!res.ok) {
-    const err = new Error(data.error || `server ตอบกลับ ${res.status}`);
+    const err = new Error(data.error?.message ?? data.error ?? `server ตอบกลับ ${res.status}`);
     err.status = res.status;
     throw err;
   }
